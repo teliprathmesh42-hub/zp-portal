@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>जिल्हा परिषद कार्य प्रणाली</title>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --p-blue: #003366; 
+            --s-green: #28a745; 
+            --err: #dc3545; 
+            --light-bg: #eef2f3;
+            --Pink: #00BFFF; 
+            --maroon: #800000;  
+        }
+        body { font-family: 'Poppins', sans-serif; background: var(--light-bg); margin: 0; padding: 15px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        
+        /* हेडर विभाग संरचना */
+        .header-section { 
+            display: flex; 
+            align-items: center; 
+            border-bottom: 4px solid var(--s-green); 
+            padding-bottom: 20px; 
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        /* प्रोफाइल विभाग */
+        .profile-area { 
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            width: fit-content;
+            min-width: 180px;
+        }
+
+        .profile-img { 
+            width: 150px; 
+            height: 150px; 
+            border-radius: 50%; 
+            border: 4px solid var(--p-blue); 
+            object-fit: cover; 
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            margin-bottom: 8px;
+        }
+
+        .profile-name { 
+            font-weight: bold; 
+            color: var(--p-blue); 
+            font-size: 1.1rem;
+            text-align: center; 
+            width: 100%;
+        }
+        
+        /* मुख्य शीर्षक */
+        h1 { 
+            color: var(--maroon); 
+            margin: 0; 
+            font-family: 'Cinzel', serif; 
+            font-size: 2.2rem; 
+            flex-grow: 1;
+            text-align: center;
+            padding-right: 180px; 
+        }
+        
+        /* फॉर्म आणि बटण स्टाईल्स */
+        .dept-banner { background: var(--p-blue); color: white; padding: 15px; margin: 20px 0 10px; border-radius: 6px; font-weight: bold; font-size: 1.2rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .dept-banner:after { content: '▼'; font-size: 14px; }
+        .form-area { display: none; padding: 25px; background: #fafafa; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; }
+        .sub-points-container { display: none; margin-bottom: 20px; border-left: 4px solid var(--s-green); padding-left: 10px; }
+        .sub-point-box { border: 1px solid #ddd; margin-bottom: 8px; border-radius: 8px; overflow: hidden; background: #fff; }
+        .sub-header { padding: 12px 15px; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; font-size: 1rem; color: #333; }
+        .sub-header:after { content: '✎'; font-size: 14px; color: var(--s-green); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full { grid-column: span 2; }
+        .section-label { background: #e9ecef; padding: 10px 15px; font-weight: bold; border-left: 5px solid var(--p-blue); margin: 20px 0 10px; border-radius: 4px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #444; }
+        input[type="text"], input[type="tel"], textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        .invalid-field { border: 2px solid var(--err) !important; background-color: #fff8f8; }
+        .btn-submit { background-color: var(--s-green); color: white; border: none; padding: 15px 60px; border-radius: 50px; cursor: pointer; font-size: 18px; font-weight: bold; margin: 20px auto; display: block; }
+        
+        /* पावती स्टाईल */
+        .receipt-card { border: 2px solid var(--p-blue); padding: 25px; border-radius: 12px; background: white; margin-top: 20px; }
+        .info-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .info-table td { padding: 12px; border: 1px solid #eee; font-size: 14px; }
+        .info-table td:first-child { font-weight: bold; background: #f8f9fa; width: 35%; color: var(--p-blue); }
+        
+        .footer-btns { display: flex; gap: 15px; justify-content: center; margin-top: 25px; }
+        .btn-print { padding: 12px 25px; background: var(--p-blue); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-back { padding: 12px 25px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
+        /* --- महत्त्वाची सुधारणा: PDF/PRINT मध्ये बटणे लपवण्यासाठी --- */
+        @media print { 
+            .footer-btns, .btn-print, .btn-back { 
+                display: none !important; 
+            } 
+        }
+
+        @media (max-width: 768px) { 
+            .header-section { flex-direction: column; text-align: center; }
+            h1 { padding-right: 0; font-size: 1.8rem; margin-top: 20px; }
+            .profile-area { margin-bottom: 15px; }
+            .grid { grid-template-columns: 1fr; }
+            .full { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="portal-content">
+        <div class="header-section">
+            <div class="profile-area">
+                <img src="https://github.com/teliprathmesh42-hub/Prathmesh-/blob/main/Image.jpeg?raw=true" 
+                     alt="मा.श्री. अर्जुन आबिटकर" class="profile-img">
+                <div class="profile-name">मा.श्री. अर्जुन आबिटकर</div>
+            </div>
+            <h1>जिल्हा परिषद कार्य प्रणाली</h1>
+        </div>
+
+        <div class="dept-banner" onclick="toggleVayaktikForm()">१. वैयक्तिक कामे</div>
+        <div id="vayaktik-form-area" class="form-area"></div>
+        <div id="main-content"></div>
+    </div>
+</div>
+
+<template id="complete-form-template">
+    <div class="form-content-wrapper">
+        <form onsubmit="return false;" novalidate>
+            <div class="section-label">माहिती भरा (मराठी आणि इंग्रजी) </div>
+            <div class="grid">
+                <div class="full"><label>नाव :</label><input type="text" name="नाव" required placeholder="पूर्ण नाव लिहा" oninput="validateOnType(this)"></div>
+                <div class="full"><label>पत्ता :</label><input type="text" name="पत्ता" required placeholder="पूर्ण पत्ता लिहा" oninput="validateOnType(this)"></div>
+                <div class="full">
+                    <label>तालुका निवडा :</label>
+                    <div style="display:flex; gap:15px; padding:5px 0;">
+                        <label><input type="radio" name="तालुका" value="Bhudargad" required onclick="validateOnType(this)"> भुदरगड</label>
+                        <label><input type="radio" name="तालुका" value="Aajara" onclick="validateOnType(this)"> आजरा</label>
+                        <label><input type="radio" name="तालुका" value="Radhanagari" onclick="validateOnType(this)">राधानगरी</label>
+                    </div>
+                </div>
+                <div class="full"><label>मोबाईल नंबर :</label><input type="tel" name="मोबाईल" maxlength="10" placeholder="१० अंकी मोबाईल नंबर" required oninput="validateOnType(this)"></div>
+                <div class="full"><label>कामाचे स्वरूप :</label><textarea name="कामाचे_स्वरूप" rows="4" required placeholder="येथे तुमची सविस्तर माहिती लिहा..." oninput="validateOnType(this)"></textarea></div>
+                <div class="full"><label>दिनांक :</label><input type="text" name="दिनांक" class="auto-date" readonly style="background: #eee;"></div>
+            </div>
+            <button type="button" class="btn-submit" onclick="submitToReceipt(this)">माहिती जतन करा</button>
+        </form>
+    </div>
+</template>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwPS3LRxZXNanNV1Uz0QpB21IHl_qvteRPBNOD8XRcBJtsPDn4hWCdrb4r2hqHYFaQ8/exec';
+    
+    const sections = [
+        { title: "२. शिक्षण विभाग", subs: ["शालेय पोषण आहार", "प्राथमिक शाळा व्यवस्थापन", "माध्यमिक शिक्षण योजना", "साक्षरता अभियान", "शिक्षक प्रशिक्षण"] },
+        { title: "३. आरोग्य विभाग", subs: ["ग्रामीण रुग्णालय सेवा", "लसीकरण मोहीम", "माता-बाल आरोग्य", "आयुष्मान भारत नोंदणी"] },
+        { title: "४. कृषी विभाग", subs: ["बियाणे व खते वाटप", "कृषी अवजारे अनुदान", "फळबाग लागवड", "ठिबक सिंचन योजना"] },
+        { title: "५. पशुसंवर्धन विभाग", subs: ["पशुवैद्यकीय औषधोपचार", "दुग्ध व्यवसाय विकास", "शेळी पालन अनुदान"] },
+        { title: "६. पाणीपुरवठा विभाग", subs: ["नळ पाणीपुरवठा योजना", "जलसंधारण कामे", "विहीर पुनर्भरण"] },
+        { title: "७. बांधकाम विभाग", subs: ["ग्रामीण रस्ते बांधणी", "शाळा इमारत दुरुस्ती", "पुलांचे बांधकाम"] },
+        { title: "८. समाजकल्याण विभाग", subs: ["मागासवर्गीय विकास योजना", "दिव्यांग कल्याण मदत", "वस्ती सुधार योजना"] },
+        { title: "९. महिला व बालविकास", subs: ["अंगणवाडी पोषण आहार", "माझी कन्या भाग्यश्री", "महिला बचत गट"] },
+        { title: "१०. ग्रामीण उद्योग विभाग", subs: ["खादी ग्रामोद्योग", "कौशल्य विकास प्रशिक्षण", "लघु उद्योग नोंदणी"] }
+    ];
+
+    const temp = document.getElementById('complete-form-template');
+    function getTodayDate() { return new Date().toLocaleDateString('en-GB'); }
+
+    function validateOnType(element) { element.classList.remove('invalid-field'); }
+
+    function toggleVayaktikForm() {
+        const area = document.getElementById('vayaktik-form-area');
+        if (area.style.display === 'block') { area.style.display = 'none'; } 
+        else {
+            document.querySelectorAll('.sub-points-container, .form-area').forEach(el => el.style.display = 'none');
+            if (area.innerHTML.trim() === "") {
+                area.appendChild(temp.content.cloneNode(true));
+                area.dataset.pointName = "वैयक्तिक कामे";
+                area.querySelector('.auto-date').value = getTodayDate();
+            }
+            area.style.display = 'block';
+        }
+    }
+
+    const mainContent = document.getElementById('main-content');
+    sections.forEach(dept => {
+        let banner = document.createElement('div');
+        banner.className = 'dept-banner';
+        banner.innerText = dept.title;
+        let subContainer = document.createElement('div');
+        subContainer.className = 'sub-points-container';
+        banner.onclick = () => {
+            const isOpen = subContainer.style.display === 'block';
+            document.querySelectorAll('.sub-points-container, .form-area').forEach(el => el.style.display = 'none');
+            subContainer.style.display = isOpen ? 'none' : 'block';
+        };
+        dept.subs.forEach(point => {
+            let box = document.createElement('div');
+            box.className = 'sub-point-box';
+            let head = document.createElement('div');
+            head.className = 'sub-header';
+            head.innerText = point;
+            let body = document.createElement('div');
+            body.className = 'form-area';
+            body.dataset.pointName = point;
+            head.onclick = () => {
+                let isVisible = body.style.display === 'block';
+                subContainer.querySelectorAll('.form-area').forEach(f => f.style.display = 'none');
+                if (body.innerHTML === "") {
+                    body.appendChild(temp.content.cloneNode(true));
+                    body.querySelector('.auto-date').value = getTodayDate();
+                }
+                body.style.display = isVisible ? 'none' : 'block';
+            };
+            box.appendChild(head); box.appendChild(body); subContainer.appendChild(box);
+        });
+        mainContent.appendChild(banner); mainContent.appendChild(subContainer);
+    });
+
+    function submitToReceipt(btn) {
+        const form = btn.closest('form');
+        const formArea = btn.closest('.form-area');
+        const pointName = formArea.dataset.pointName;
+        const inputs = form.querySelectorAll('input[required], textarea[required]');
+        let isFormValid = true;
+
+        inputs.forEach(input => {
+            if (input.type === "radio") {
+                if (!form.querySelector('input[name="तालुका"]:checked')) isFormValid = false;
+            } else if (input.value.trim() === "") {
+                input.classList.add('invalid-field'); isFormValid = false;
+            }
+        });
+
+        if (!isFormValid) { alert("कृपया सर्व माहिती भरा."); return; }
+
+        const mobileInput = form.querySelector('input[name="मोबाईल"]');
+        if (mobileInput.value.length !== 10 || isNaN(mobileInput.value)) {
+            mobileInput.classList.add('invalid-field'); alert("कृपया वैध १० अंकी मोबाईल नंबर टाका."); return;
+        }
+
+        const fd = new FormData(form);
+        const urlEncodedData = new URLSearchParams();
+        urlEncodedData.append("अर्ज_विषय", pointName);
+        urlEncodedData.append("नाव", fd.get("नाव"));
+        urlEncodedData.append("पत्ता", fd.get("पत्ता"));
+        urlEncodedData.append("तालुका", fd.get("तालुका"));
+        urlEncodedData.append("मोबाईल", fd.get("मोबाईल"));
+        urlEncodedData.append("कामाचे_स्वरूप", fd.get("कामाचे_स्वरूप"));
+        urlEncodedData.append("दिनांक", fd.get("दिनांक"));
+
+        btn.innerText = "जतन होत आहे..."; btn.disabled = true;
+        fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: urlEncodedData })
+        .then(() => showReceipt(urlEncodedData))
+        .catch(() => { alert("त्रुटी आली!"); btn.disabled = false; btn.innerText="माहिती जतन करा"; });
+    }
+
+    /* --- सुधारित showReceipt फंक्शन --- */
+    function showReceipt(dataParams) {
+        const portalContent = document.getElementById('portal-content');
+        let rows = "";
+        dataParams.forEach((value, key) => { rows += `<tr><td>${key.replace(/_/g, ' ')}</td><td>${value}</td></tr>`; });
+        portalContent.innerHTML = `
+            <div class="receipt-card">
+                <h2 style="text-align:center; color:var(--p-blue);">जिल्हा परिषद</h2>
+                <table class="info-table">${rows}</table>
+                <div class="footer-btns">
+                    <button class="btn-print" onclick="window.print()">📄 DOWNLOAD</button>
+                    <button class="btn-back" onclick="location.reload()">⬅️ BACK </button>
+                </div>
+            </div>`;
+        window.scrollTo(0,0);
+    }
+</script>
+</body>
+</html>
